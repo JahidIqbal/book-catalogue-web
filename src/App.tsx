@@ -1,14 +1,22 @@
-// App.tsx
-import React from 'react'; // Add this line to import React
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import BookList from './components/BookList';
+import Login from './pages/Login';
+import Registration from './pages/Registration';
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <BookList />
+      <Routes>
+        <Route path="/" element={<BookList />} />
+        <Route path="/allbooks" element={<BookList />} />
+        <Route path="/signin" element={<Login />} />
+        <Route path="/signup" element={<Registration />} />
+        {/* Add more routes here */}
+      </Routes>
       <Footer />
     </div>
   );
