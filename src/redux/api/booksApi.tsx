@@ -1,29 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { ReactNode } from 'react';
+import { IBook } from '../../types/globalTypes';
 
-interface Book {
-  Reviews: ReactNode;
-  title: string;
-  author: string;
-  genre: string;
-  publicationYear: number;
-}
-
-export const booksApi = createApi({
-  reducerPath: 'booksApi',
-  baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+export const api = createApi({
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000' }),
   endpoints: (builder) => ({
-    getBooks: builder.query<Book[], void>({
-      query: () => 'books',
-    }),
-    addBook: builder.mutation<Book, Partial<Book>>({
-      query: (newBook) => ({
-        url: 'books',
-        method: 'POST',
-        body: newBook,
-      }),
+    getBooks: builder.query<IBook[], void>({
+      query: () => 'books', 
     }),
   }),
 });
 
-export const { useGetBooksQuery, useAddBookMutation } = booksApi;
+export const { useGetBooksQuery} = api;
