@@ -15,15 +15,23 @@ const BookList: React.FC = () => {
   const dispatch = useDispatch();
   
   const filteredBooks = books?.filter((book: IBook) => {
-    const titleMatch = book.title.toLowerCase().includes(search.toLowerCase());
-    const authorMatch = book.Author.toLowerCase().includes(search.toLowerCase());
-    const genreMatch = filter.genre === '' || book.Genre.toLowerCase() === filter.genre.toLowerCase();
+    // Ensure that book.title is not null or undefined
+    const titleMatch = book.title && book.title.toLowerCase().includes(search.toLowerCase());
+  
+    // Ensure that book.Author is not null or undefined
+    const authorMatch = book.Author && book.Author.toLowerCase().includes(search.toLowerCase());
+  
+    // Check for valid properties before accessing them
+    const genreMatch = filter.genre === '' || (book.Genre && book.Genre.toLowerCase() === filter.genre.toLowerCase());
+  
+    // Check for valid properties before accessing them
     const publicationYearMatch =
       filter.publicationYear === '' ||
-      book.PublicationDate.includes(filter.publicationYear);
-
+      (book.PublicationDate && book.PublicationDate.includes(filter.publicationYear));
+  
     return (titleMatch || authorMatch) && genreMatch && publicationYearMatch;
   });
+  
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -61,7 +69,7 @@ const BookList: React.FC = () => {
       </div>
       {filteredBooks?.map((book: IBook) => (
         <Book
-          key={book._id}
+          // key={book._id}
           title={book.title}
           author={book.Author}
           genre={book.Genre}
