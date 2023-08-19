@@ -1,11 +1,29 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
-import { useGetSingleBookQuery } from '../redux/api/booksApi';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useGetSingleBookQuery, useDeleteBookMutation } from '../redux/api/booksApi';
 
 const BookDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
 
   const { data: bookDetails, isLoading, isError } = useGetSingleBookQuery(id!);
+
+  const [deleteBookMutation] = useDeleteBookMutation(); // Get the mutation function
+
+  const handleEditClick = () => {
+    navigate(`/edit-book/${id}`);
+  };
+
+  const handleDeleteClick = async () => {
+    if (window.confirm('Are you sure you want to delete this book?')) {
+      try {
+        await deleteBookMutation(id!); // Call the deleteBook mutation
+        navigate('/book-list');
+      } catch (error) {
+        console.error('Failed to delete book', error);
+      }
+    }
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -25,8 +43,8 @@ const BookDetailPage: React.FC = () => {
         <p>Publication Date: {bookDetails.PublicationDate}</p>
       </div>
       <div>
-        <button>Edit</button>
-        <button>Delete</button>
+        <button onClick={handleEditClick}>Edit</button>
+        <button onClick={handleDeleteClick}>Delete</button>
       </div>
     </div>
   );

@@ -17,8 +17,22 @@ export const api = createApi({
         body: newBook,
       }),
     }),
+    editBook: builder.mutation<void, { id: string; updatedBook: Partial<IBook> }>({
+      query: ({ id, updatedBook }) => ({
+        url: `books/${id}`,
+        method: 'PUT',
+        body: updatedBook,
+      }),
+    }),
+    deleteBook: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `books/${id}`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useGetBooksQuery, useAddBookMutation,useGetSingleBookQuery } = api;
+export const { useGetBooksQuery, useAddBookMutation,useGetSingleBookQuery,useEditBookMutation,
+  useDeleteBookMutation } = api;
 
