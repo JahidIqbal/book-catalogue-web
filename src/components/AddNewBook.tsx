@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
 import { useAddBookMutation, useGetBooksQuery } from '../redux/api/booksApi';
+import { IBook } from '../types/globalTypes';
+
+interface NewBook {
+  title: string;
+  Author: string;
+  Genre: string;
+  PublicationDate: string;
+}
 
 const AddBookForm = () => {
   const [title, setTitle] = useState('');
@@ -8,12 +16,12 @@ const AddBookForm = () => {
   const [publicationDate, setPublicationDate] = useState('');
 
   const { refetch } = useGetBooksQuery();
-  const [addBookMutation,{isLoading}] = useAddBookMutation();
+  const [addBookMutation, { isLoading }] = useAddBookMutation();
 
-  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
-    const newBook = {
+    const newBook: NewBook = {
       title: title,
       Author: author,
       Genre: genre,
@@ -21,7 +29,7 @@ const AddBookForm = () => {
     };
 
     try {
-      await addBookMutation(newBook);
+      await addBookMutation(newBook as IBook); // Type assertion to IBook
 
       setTitle('');
       setAuthor('');
@@ -38,43 +46,43 @@ const AddBookForm = () => {
     }
   };
 
-    return (
-        <div>
-            <h2>Add a New Book</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="Author"
-                    value={author}
-                    onChange={(e) => setAuthor(e.target.value)}
-                    required
-                />
-                <input
-                    type="text"
-                    placeholder="Genre"
-                    value={genre}
-                    onChange={(e) => setGenre(e.target.value)}
-                    required
-                />
-                <input
-                    type="date"
-                    value={publicationDate}
-                    onChange={(e) => setPublicationDate(e.target.value)}
-                    required
-                />
-                <button type="submit" disabled={isLoading}>
-                    {isLoading ? 'Adding...' : 'Add Book'}
-                </button>
-            </form>
-        </div>
-    );
+  return (
+    <div>
+      <h2>Add a New Book</h2>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Author"
+          value={author}
+          onChange={(e) => setAuthor(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Genre"
+          value={genre}
+          onChange={(e) => setGenre(e.target.value)}
+          required
+        />
+        <input
+          type="date"
+          value={publicationDate}
+          onChange={(e) => setPublicationDate(e.target.value)}
+          required
+        />
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Adding...' : 'Add Book'}
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default AddBookForm;

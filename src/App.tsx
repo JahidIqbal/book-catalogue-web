@@ -6,6 +6,7 @@ import BookList from './components/BookList';
 import Login from './pages/Login';
 import Registration from './pages/Registration';
 import AddBookForm from './components/AddNewBook';
+import BookDetailPage from './components/BookDetails';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<BookList />} />
         <Route path="/allbooks" element={<BookList />} />
         <Route path="/addnewbook" element={<AddBookForm />} />
+        <Route path="/books/:id" element={<BookDetailPage />} />
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<Registration />} />
         {/* Add more routes here */}

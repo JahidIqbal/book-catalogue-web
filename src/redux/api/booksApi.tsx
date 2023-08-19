@@ -7,6 +7,9 @@ export const api = createApi({
     getBooks: builder.query<IBook[], void>({
       query: () => 'books', 
     }),
+    getSingleBook: builder.query<IBook, string>({
+      query: (id) => `books/${id}`, // Assumes that you have a route like '/books/:id' for individual books
+    }),
     addBook: builder.mutation<void, IBook>({
       query: (newBook) => ({
         url: 'books',
@@ -17,5 +20,5 @@ export const api = createApi({
   }),
 });
 
-export const { useGetBooksQuery, useAddBookMutation } = api;
+export const { useGetBooksQuery, useAddBookMutation,useGetSingleBookQuery } = api;
 

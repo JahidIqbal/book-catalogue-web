@@ -1,37 +1,28 @@
-// src/components/BookList.tsx
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useGetBooksQuery } from '../redux/api/booksApi';
 import { setSearch } from '../redux/features/searchSlice';
 import { setGenreFilter, setPublicationYearFilter } from '../redux/features/filterSlice';
 import { RootState } from '../redux/store';
-import Book from './Book';
 import { IBook } from '../types/globalTypes';
+import { Link } from 'react-router-dom';
 
 const BookList: React.FC = () => {
   const { data: books, isLoading, isError } = useGetBooksQuery();
   const search = useSelector((state: RootState) => state.search);
   const filter = useSelector((state: RootState) => state.filter);
   const dispatch = useDispatch();
-  
+
   const filteredBooks = books?.filter((book: IBook) => {
-    // Ensure that book.title is not null or undefined
     const titleMatch = book.title && book.title.toLowerCase().includes(search.toLowerCase());
-  
-    // Ensure that book.Author is not null or undefined
     const authorMatch = book.Author && book.Author.toLowerCase().includes(search.toLowerCase());
-  
-    // Check for valid properties before accessing them
     const genreMatch = filter.genre === '' || (book.Genre && book.Genre.toLowerCase() === filter.genre.toLowerCase());
-  
-    // Check for valid properties before accessing them
     const publicationYearMatch =
       filter.publicationYear === '' ||
       (book.PublicationDate && book.PublicationDate.includes(filter.publicationYear));
-  
+
     return (titleMatch || authorMatch) && genreMatch && publicationYearMatch;
   });
-  
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -40,6 +31,18 @@ const BookList: React.FC = () => {
   if (isError) {
     return <div>Error loading books.</div>;
   }
+
+  const renderBookCard = (book: IBook) => (
+    <div key={book._id} className="book-card">
+      <h3>{book.title}</h3>
+      <p>Author: {book.Author}</p>
+      <p>Genre: {book.Genre}</p>
+      <p>Publication Date: {book.PublicationDate}</p>
+      <Link to={`/books/${book._id}`} className="details-button">
+        See Details
+      </Link>
+    </div>
+  );
 
   return (
     <div className="book-list">
@@ -67,15 +70,11 @@ const BookList: React.FC = () => {
           onChange={(e) => dispatch(setPublicationYearFilter(e.target.value))}
         />
       </div>
-      {filteredBooks?.map((book: IBook) => (
-        <Book
-          // key={book._id}
-          title={book.title}
-          author={book.Author}
-          genre={book.Genre}
-          publicationDate={book.PublicationDate}
-        />
-      ))}
+      <div className="book-grid">
+        {filteredBooks?.map((book: IBook) => (
+          renderBookCard(book)
+        ))}
+      </div>
     </div>
   );
 };
