@@ -30,9 +30,19 @@ export const api = createApi({
         method: 'DELETE',
       }),
     }),
+    addReview: builder.mutation<void, { bookId: string; review: string }>({
+      query: ({ bookId, review }) => ({
+        url: `books/${bookId}/reviews`,
+        method: 'POST',
+        body: { review },
+      }),
+    }),
+    getReviews: builder.query<string[], string>({
+      query: (bookId) => `books/${bookId}/reviews`,
+    }),
   }),
 });
 
 export const { useGetBooksQuery, useAddBookMutation,useGetSingleBookQuery,useEditBookMutation,
-  useDeleteBookMutation } = api;
+  useDeleteBookMutation, useAddReviewMutation,useGetReviewsQuery  } = api;
 
