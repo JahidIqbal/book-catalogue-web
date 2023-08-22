@@ -11,12 +11,13 @@ const BookDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { data: bookDetails, isLoading, isError } = useGetSingleBookQuery(id!);
+  const { data: bookDetails, isLoading: bookLoading, isError: bookError } = useGetSingleBookQuery(id!);
   const [deleteBookMutation] = useDeleteBookMutation();
   const [addReviewMutation] = useAddReviewMutation();
-  const { data: reviews } = useGetReviewsQuery(id!);
+  const { data: reviews, refetch: refetchReviews, isLoading: reviewsLoading } = useGetReviewsQuery(id!);
 
   const [review, setReview] = useState('');
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
   const handleEditClick = () => {
     navigate(`/edit-book/${id}`);
@@ -41,19 +42,25 @@ const BookDetailPage: React.FC = () => {
     }
 
     try {
+      setIsSubmittingReview(true); // Set loading state
       await addReviewMutation({ bookId: id!, review: review });
       setReview('');
+      setIsSubmittingReview(false); // Clear loading state
       alert('Review submitted successfully!');
+
+      // After adding the review, refetch the reviews to include the new review
+      refetchReviews();
     } catch (error) {
       console.error('Failed to submit review', error);
+      setIsSubmittingReview(false); // Clear loading state on error
     }
   };
 
-  if (isLoading) {
+  if (bookLoading) {
     return <div>Loading...</div>;
   }
 
-  if (isError || !bookDetails) {
+  if (bookError || !bookDetails) {
     return <div>Error loading book details.</div>;
   }
 
@@ -66,13 +73,17 @@ const BookDetailPage: React.FC = () => {
         <p>Genre: {bookDetails.Genre}</p>
         <p>Publication Date: {bookDetails.PublicationDate}</p>
         <div>
-        <h3>Reviews</h3>
-        <ul>
-          {reviews?.map((review: string, index: number) => (
-            <li key={index}>{review}</li>
-          ))}
-        </ul>
-      </div>
+          <h3>Reviews</h3>
+          {reviewsLoading ? (
+            <div>Loading reviews...</div>
+          ) : (
+            <ul>
+              {reviews?.map((review: string, index: number) => (
+                <li key={index}>{review}</li>
+              ))}
+            </ul>
+          )}
+        </div>
       </div>
       <div>
         <button onClick={handleEditClick}>Edit</button>
@@ -86,7 +97,9 @@ const BookDetailPage: React.FC = () => {
             onChange={(e) => setReview(e.target.value)}
             placeholder="Write your review..."
           />
-          <button type="submit">Submit Review</button>
+          <button type="submit" disabled={isSubmittingReview}>
+            {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
+          </button>
         </form>
       </div>
     </div>
