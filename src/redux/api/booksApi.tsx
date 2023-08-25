@@ -5,10 +5,10 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000' }),
   endpoints: (builder) => ({
     getBooks: builder.query<IBook[], void>({
-      query: () => 'books', 
+      query: () => 'books',
     }),
     getSingleBook: builder.query<IBook, string>({
-      query: (id) => `books/${id}`, // Assumes that you have a route like '/books/:id' for individual books
+      query: (id) => `books/${id}`,
     }),
     addBook: builder.mutation<void, IBook>({
       query: (newBook) => ({
@@ -23,7 +23,7 @@ export const api = createApi({
         method: 'PUT',
         body: updatedBook,
       }),
-    }),
+    }),    
     deleteBook: builder.mutation<void, string>({
       query: (id) => ({
         url: `books/${id}`,
@@ -43,6 +43,12 @@ export const api = createApi({
   }),
 });
 
-export const { useGetBooksQuery, useAddBookMutation,useGetSingleBookQuery,useEditBookMutation,
-  useDeleteBookMutation, useAddReviewMutation,useGetReviewsQuery  } = api;
-
+export const {
+  useGetBooksQuery,
+  useAddBookMutation,
+  useGetSingleBookQuery,
+  useEditBookMutation, // Add the useEditBookMutation hook
+  useDeleteBookMutation,
+  useAddReviewMutation,
+  useGetReviewsQuery,
+} = api;

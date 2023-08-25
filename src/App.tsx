@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Registration from './pages/Registration';
 import AddBookForm from './components/AddNewBook';
 import BookDetailPage from './components/BookDetails';
+import EditBookForm from './components/EditBookForm';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
         <Route path="/books/:id" element={<BookDetailPage />} />
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<Registration />} />
-        {/* Add more routes here */}
+        <Route path="/books/:id/edit" element={<EditBookForm />} /> {/* Add this route */}
       </Routes>
       <Footer />
     </div>

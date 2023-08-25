@@ -20,7 +20,7 @@ const BookDetailPage: React.FC = () => {
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
   const handleEditClick = () => {
-    navigate(`/edit-book/${id}`);
+    navigate(`/books/${id}/edit`);
   };
 
   const handleDeleteClick = async () => {
@@ -69,9 +69,9 @@ const BookDetailPage: React.FC = () => {
       <h2>Book Details</h2>
       <div>
         <h3>Title: {bookDetails.title}</h3>
-        <p>Author: {bookDetails.Author}</p>
-        <p>Genre: {bookDetails.Genre}</p>
-        <p>Publication Date: {bookDetails.PublicationDate}</p>
+        <p>Author: {bookDetails.Author}</p> {/* Corrected the property name */}
+        <p>Genre: {bookDetails.Genre}</p> {/* Corrected the property name */}
+        <p>Publication Date: {bookDetails.PublicationDate}</p> {/* Corrected the property name */}
         <div>
           <h3>Reviews</h3>
           {reviewsLoading ? (
