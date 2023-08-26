@@ -47,39 +47,53 @@ const AddBookForm = () => {
   };
 
   return (
-    <div>
-      <h2>Add a New Book</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Author"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Genre"
-          value={genre}
-          onChange={(e) => setGenre(e.target.value)}
-          required
-        />
-        <input
-          type="date"
-          value={publicationDate}
-          onChange={(e) => setPublicationDate(e.target.value)}
-          required
-        />
-        <button type="submit" disabled={isLoading}>
-          {isLoading ? 'Adding...' : 'Add Book'}
-        </button>
+    <div className="container">
+      <h2 className="mb-4">Add a New Book</h2>
+      <form onSubmit={handleSubmit} className="row g-3">
+        <div className="col-md-6 mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+          />
+        </div>
+        <div className="col-md-6 mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Author"
+            value={author}
+            onChange={(e) => setAuthor(e.target.value)}
+            required
+          />
+        </div>
+        <div className="col-md-6 mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Genre"
+            value={genre}
+            onChange={(e) => setGenre(e.target.value)}
+            required
+          />
+        </div>
+        <div className="col-md-6 mb-3">
+          <input
+            type="date"
+            className="form-control"
+            value={publicationDate}
+            onChange={(e) => setPublicationDate(e.target.value)}
+            required
+          />
+        </div>
+        <div className="col-12">
+          <button type="submit" className="btn btn-primary" disabled={isLoading}>
+            {isLoading ? 'Adding...' : 'Add Book'}
+          </button>
+        </div>
       </form>
     </div>
   );

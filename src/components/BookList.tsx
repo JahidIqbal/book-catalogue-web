@@ -32,48 +32,66 @@ const BookList: React.FC = () => {
     return <div>Error loading books.</div>;
   }
 
-  const renderBookCard = (book: IBook) => (
-    <div key={book._id} className="book-card">
-      <h3>{book.title}</h3>
-      <p>Author: {book.Author}</p>
-      <p>Genre: {book.Genre}</p>
-      <p>Publication Date: {book.PublicationDate}</p>
-      <Link to={`/books/${book._id}`} className="details-button">
-        See Details
-      </Link>
-    </div>
-  );
-
   return (
-    <div className="book-list">
-      <div className="search-bar">
-        <input
-          type="text"
-          placeholder="Search by title or author..."
-          value={search}
-          onChange={(e) => dispatch(setSearch(e.target.value))}
-        />
-        <select
-          value={filter.genre}
-          onChange={(e) => dispatch(setGenreFilter(e.target.value))}
-        >
-          <option value="">All Genres</option>
-          <option value="Fiction">Fiction</option>
-          <option value="Dystopian">Dystopian</option>
-          <option value="Romance">Romance</option>
-          <option value="Fantasy">Fantasy</option>
-        </select>
-        <input
-          type="text"
-          placeholder="Publication Year"
-          value={filter.publicationYear}
-          onChange={(e) => dispatch(setPublicationYearFilter(e.target.value))}
-        />
-      </div>
-      <div className="book-grid">
-        {filteredBooks?.map((book: IBook) => (
-          renderBookCard(book)
-        ))}
+    <div className="container mt-4">
+      <div className="row">
+        <div className="col">
+          <div className="search-bar mb-3">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Search by title or author..."
+              value={search}
+              onChange={(e) => dispatch(setSearch(e.target.value))}
+            />
+            <select
+              className="form-select mt-2"
+              value={filter.genre}
+              onChange={(e) => dispatch(setGenreFilter(e.target.value))}
+            >
+              <option value="">All Genres</option>
+              <option value="Fiction">Fiction</option>
+              <option value="Dystopian">Dystopian</option>
+              <option value="Romance">Romance</option>
+              <option value="Fantasy">Fantasy</option>
+            </select>
+            <input
+              type="text"
+              className="form-control mt-2"
+              placeholder="Publication Year"
+              value={filter.publicationYear}
+              onChange={(e) => dispatch(setPublicationYearFilter(e.target.value))}
+            />
+          </div>
+          <div className="book-table">
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Genre</th>
+                  <th>Publication Date</th>
+                  <th>Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredBooks?.slice(0, 10).map((book: IBook) => (
+                  <tr key={book._id}>
+                    <td>{book.title}</td>
+                    <td>{book.Author}</td>
+                    <td>{book.Genre}</td>
+                    <td>{book.PublicationDate}</td>
+                    <td>
+                      <Link to={`/books/${book._id}`} className="btn btn-primary">
+                        See Details
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );

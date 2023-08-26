@@ -27,7 +27,7 @@ const BookDetailPage: React.FC = () => {
     if (window.confirm('Are you sure you want to delete this book?')) {
       try {
         await deleteBookMutation(id!);
-        navigate('/book-list');
+        navigate('/');
       } catch (error) {
         console.error('Failed to delete book', error);
       }
@@ -65,42 +65,49 @@ const BookDetailPage: React.FC = () => {
   }
 
   return (
-    <div>
-      <h2>Book Details</h2>
-      <div>
-        <h3>Title: {bookDetails.title}</h3>
-        <p>Author: {bookDetails.Author}</p> {/* Corrected the property name */}
-        <p>Genre: {bookDetails.Genre}</p> {/* Corrected the property name */}
-        <p>Publication Date: {bookDetails.PublicationDate}</p> {/* Corrected the property name */}
+    <div className="container py-5">
+      <div className="card p-4 shadow">
+        <h2 className="card-title mb-4">Book Details</h2>
+        <div className="mb-4">
+          <h3>Title: {bookDetails.title}</h3>
+          <p>Author: {bookDetails.Author}</p>
+          <p>Genre: {bookDetails.Genre}</p>
+          <p>Publication Date: {bookDetails.PublicationDate}</p>
+        </div>
+        <div className="mb-4">
+          <button className="btn btn-primary me-2" onClick={handleEditClick}>Edit</button>
+          <button className="btn btn-danger" onClick={handleDeleteClick}>Delete</button>
+        </div>
+        <div className="mb-4">
+          <h3>Leave a Review</h3>
+          <form onSubmit={handleReviewSubmit}>
+            <textarea
+              value={review}
+              onChange={(e) => setReview(e.target.value)}
+              placeholder="Write your review..."
+              className="form-control"
+            />
+            <button
+              type="submit"
+              className="btn btn-primary mt-2"
+              disabled={isSubmittingReview}
+            >
+              {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
+            </button>
+          </form>
+        </div>
         <div>
           <h3>Reviews</h3>
           {reviewsLoading ? (
             <div>Loading reviews...</div>
           ) : (
             <ul>
-              {reviews?.map((review: string, index: number) => (
+              {reviews?.slice(0, 10).map((review: string, index: number) => (
                 <li key={index}>{review}</li>
               ))}
             </ul>
           )}
         </div>
-      </div>
-      <div>
-        <button onClick={handleEditClick}>Edit</button>
-        <button onClick={handleDeleteClick}>Delete</button>
-      </div>
-      <div>
-        <h3>Leave a Review</h3>
-        <form onSubmit={handleReviewSubmit}>
-          <textarea
-            value={review}
-            onChange={(e) => setReview(e.target.value)}
-            placeholder="Write your review..."
-          />
-          <button type="submit" disabled={isSubmittingReview}>
-            {isSubmittingReview ? 'Submitting...' : 'Submit Review'}
-          </button>
-        </form>
       </div>
     </div>
   );

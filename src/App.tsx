@@ -8,6 +8,8 @@ import Registration from './pages/Registration';
 import AddBookForm from './components/AddNewBook';
 import BookDetailPage from './components/BookDetails';
 import EditBookForm from './components/EditBookForm';
+import Wishlist from './components/WishList';
+import ReadingList from './components/ReadingList';
 
 function App() {
   return (
@@ -20,7 +22,9 @@ function App() {
         <Route path="/books/:id" element={<BookDetailPage />} />
         <Route path="/signin" element={<Login />} />
         <Route path="/signup" element={<Registration />} />
-        <Route path="/books/:id/edit" element={<EditBookForm />} /> {/* Add this route */}
+        <Route path="/books/:id/edit" element={<EditBookForm />} />
+        <Route path="/wishlist" element={<Wishlist />} /> 
+        <Route path="/reading-list" element={<ReadingList />} /> 
       </Routes>
       <Footer />
     </div>
