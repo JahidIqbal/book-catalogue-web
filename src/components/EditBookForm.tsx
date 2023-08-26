@@ -6,7 +6,7 @@ const EditBookForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { data: bookDetails, isLoading, isError } = useGetSingleBookQuery(id!);
+  const { data: bookDetails, refetch: refetchBookDetails, isLoading, isError } = useGetSingleBookQuery(id!);
   const [editBookMutation] = useEditBookMutation();
 
   const [title, setTitle] = useState('');
@@ -44,6 +44,10 @@ const EditBookForm: React.FC = () => {
       });
       setIsSubmitting(false);
       alert('Book updated successfully!');
+
+      // Refetch the book details after a successful update
+      refetchBookDetails();
+
       navigate(`/books/${id}`);
     } catch (error) {
       console.error('Failed to update book', error);
@@ -59,7 +63,6 @@ const EditBookForm: React.FC = () => {
   if (isError || !bookDetails) {
     return <div>Error loading book details.</div>;
   }
-
   return (
     <div>
       <h2>Edit Book</h2>
