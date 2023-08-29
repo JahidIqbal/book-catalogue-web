@@ -42,7 +42,7 @@ const Registration: React.FC = () => {
             </div>
             <div className="card-body">
             <div className="form-group">
-                <label>Username</label>
+                <label>Name</label>
                 <input
                   type="text"
                   className="form-control"

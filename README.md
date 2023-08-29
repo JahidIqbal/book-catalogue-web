@@ -2,8 +2,11 @@
 
 This is a simple book store application that allows users to browse and manage a collection of books.
 
+## Website Link
+https://book-store-ebabe.web.app/
+
 ## Technologies
-Reactjs,Redux,Typescript,Nodejs,MongoDB,Express
+Reactjs,Redux,Typescript,Firebase,Nodejs,MongoDB,Express
 
 ## Features
 
