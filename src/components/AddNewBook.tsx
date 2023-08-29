@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useAddBookMutation, useGetBooksQuery } from '../redux/api/booksApi';
 import { IBook } from '../types/globalTypes';
+import { useNavigate } from 'react-router-dom';
 
 interface NewBook {
   title: string;
@@ -14,6 +15,7 @@ const AddBookForm = () => {
   const [author, setAuthor] = useState('');
   const [genre, setGenre] = useState('');
   const [publicationDate, setPublicationDate] = useState('');
+  const navigate = useNavigate();
 
   const { refetch } = useGetBooksQuery();
   const [addBookMutation, { isLoading }] = useAddBookMutation();
@@ -38,7 +40,7 @@ const AddBookForm = () => {
 
       // Show a simple alert notification
       alert('Book added successfully!');
-
+      navigate('/');
       refetch();
     } catch (error) {
       // Show an error alert notification

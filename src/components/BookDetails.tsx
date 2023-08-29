@@ -5,6 +5,7 @@ import {
   useDeleteBookMutation,
   useAddReviewMutation,
   useGetReviewsQuery,
+  useGetBooksQuery,
 } from '../redux/api/booksApi';
 
 const BookDetailPage: React.FC = () => {
@@ -15,8 +16,8 @@ const BookDetailPage: React.FC = () => {
   const [deleteBookMutation] = useDeleteBookMutation();
   const [addReviewMutation] = useAddReviewMutation();
   const { data: reviews, refetch: refetchReviews, isLoading: reviewsLoading } = useGetReviewsQuery(id!);
-
   const [review, setReview] = useState('');
+  const { refetch: refetchBooks } = useGetBooksQuery();
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
   const handleEditClick = () => {
@@ -27,12 +28,14 @@ const BookDetailPage: React.FC = () => {
     if (window.confirm('Are you sure you want to delete this book?')) {
       try {
         await deleteBookMutation(id!);
+        refetchBooks(); // Manually refetch the books list
         navigate('/');
       } catch (error) {
         console.error('Failed to delete book', error);
       }
     }
   };
+  
 
   const handleReviewSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -32,6 +32,8 @@ const BookList: React.FC = () => {
     return <div>Error loading books.</div>;
   }
 
+  // console.log(books);
+  
   return (
     <div className="container mt-4">
       <div className="row">

@@ -5,7 +5,7 @@ import { User } from "firebase/auth";
 
 const Header: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
-
+  
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((authUser) => {
       setUser(authUser);
@@ -48,7 +48,7 @@ const Header: React.FC = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  Profile
+                  {user.displayName}
                 </button>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                   <li>

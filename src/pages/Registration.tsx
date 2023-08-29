@@ -1,17 +1,32 @@
 import React, { useState } from 'react';
-import { getAuth, createUserWithEmailAndPassword, Auth } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile, Auth } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 const Registration: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [username, setUsername] = useState('');
   const navigate = useNavigate();
 
   const handleRegistration = async () => {
     try {
       const authInstance: Auth = getAuth();
-      await createUserWithEmailAndPassword(authInstance, email, password);
-      navigate('/');
+      const userCredential = await createUserWithEmailAndPassword(authInstance, email, password);
+
+      if (authInstance.currentUser) {
+        await updateProfile(authInstance.currentUser, {
+          displayName: username,
+        });
+
+        // Set a flag indicating registration completion
+        localStorage.setItem('registrationComplete', 'true');
+      }
+
+      // Wait for a brief moment before navigating
+      setTimeout(() => {
+        navigate('/');
+      }, 1000); // Wait for 1 second
+
     } catch (error: any) {
       console.error((error as Error).message);
     }
@@ -26,6 +41,16 @@ const Registration: React.FC = () => {
               <h2 className="mb-0">Registration</h2>
             </div>
             <div className="card-body">
+            <div className="form-group">
+                <label>Username</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Name"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
               <div className="form-group">
                 <label>Email</label>
                 <input
@@ -46,7 +71,7 @@ const Registration: React.FC = () => {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              <button className="btn btn-primary" onClick={handleRegistration}>
+              <button className="btn btn-primary mt-4" onClick={handleRegistration}>
                 Register
               </button>
             </div>

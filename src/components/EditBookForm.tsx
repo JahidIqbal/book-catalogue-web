@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useGetSingleBookQuery, useEditBookMutation } from '../redux/api/booksApi';
+import { useGetSingleBookQuery, useEditBookMutation, useGetBooksQuery } from '../redux/api/booksApi';
 
 const EditBookForm: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const { data: bookDetails, refetch: refetchBookDetails, isLoading, isError } = useGetSingleBookQuery(id!);
+  const { refetch: refetchBooks } = useGetBooksQuery();
+
+
   const [editBookMutation] = useEditBookMutation();
 
   const [title, setTitle] = useState('');
@@ -47,7 +50,7 @@ const EditBookForm: React.FC = () => {
 
       // Refetch the book details after a successful update
       refetchBookDetails();
-
+      refetchBooks(); 
       navigate(`/books/${id}`);
     } catch (error) {
       console.error('Failed to update book', error);
@@ -63,31 +66,33 @@ const EditBookForm: React.FC = () => {
   if (isError || !bookDetails) {
     return <div>Error loading book details.</div>;
   }
+
   return (
-    <div>
+    <div className="container mt-5">
       <h2>Edit Book</h2>
       <form onSubmit={handleEditSubmit}>
-        <div>
-          <label>Title:</label>
-          <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <div className="mb-3">
+          <label className="form-label">Title:</label>
+          <input type="text" className="form-control" value={title} onChange={(e) => setTitle(e.target.value)} />
         </div>
-        <div>
-          <label>Author:</label>
-          <input type="text" value={author} onChange={(e) => setAuthor(e.target.value)} />
+        <div className="mb-3">
+          <label className="form-label">Author:</label>
+          <input type="text" className="form-control" value={author} onChange={(e) => setAuthor(e.target.value)} />
         </div>
-        <div>
-          <label>Genre:</label>
-          <input type="text" value={genre} onChange={(e) => setGenre(e.target.value)} />
+        <div className="mb-3">
+          <label className="form-label">Genre:</label>
+          <input type="text" className="form-control" value={genre} onChange={(e) => setGenre(e.target.value)} />
         </div>
-        <div>
-          <label>Publication Date:</label>
+        <div className="mb-3">
+          <label className="form-label">Publication Date:</label>
           <input
             type="text"
+            className="form-control"
             value={publicationDate}
             onChange={(e) => setPublicationDate(e.target.value)}
           />
         </div>
-        <button type="submit" disabled={isSubmitting}>
+        <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
           {isSubmitting ? 'Updating...' : 'Update Book'}
         </button>
       </form>
