@@ -1,6 +1,9 @@
-#Book Store Application
+### Book Store Application
 
-This is a simple book catalog application built using React, Redux, and Typescript. The application allows users to browse and manage a collection of books.
+This is a simple book store application that allows users to browse and manage a collection of books.
+
+## Technologies
+Reactjs,Redux,Typescript,Nodejs,MongoDB,Express
 
 ## Features
 
